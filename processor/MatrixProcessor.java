@@ -23,6 +23,8 @@ public class MatrixProcessor {
     public static Matrix multiplyByNumber(int c, Matrix matrix) {
         Matrix res = new Matrix();
 
+        res.initialize(matrix.getRowCount(), matrix.getColumnCount());
+
         for (int i = 0; i < matrix.getRowCount(); i++) {
             for (int j = 0; j < matrix.getColumnCount(); j++) {
                 res.set(i, j, c * matrix.get(i, j));
