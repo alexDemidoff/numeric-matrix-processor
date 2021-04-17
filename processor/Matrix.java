@@ -5,21 +5,24 @@ import java.util.Scanner;
 public class Matrix {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private int[][] matrix;
+    private double[][] cells;
     private int n;
     private int m;
 
-    public void initialize(int n, int m) {
+    private Matrix(int n, int m) {
         this.n = n;
         this.m = m;
+        cells = new double[n][m];
+    }
 
-        matrix = new int[n][m];
+    public static Matrix initialize(int n, int m) {
+        return new Matrix(n, m);
     }
 
     public void readMatrix() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                matrix[i][j] = scanner.nextInt();
+                cells[i][j] = scanner.nextDouble();
             }
         }
     }
@@ -27,18 +30,22 @@ public class Matrix {
     public void print() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                System.out.print(matrix[i][j] + " ");
+                if (cells[i][j] % 1 == 0) {
+                    System.out.print((int) cells[i][j] + " ");
+                } else {
+                    System.out.print(cells[i][j] + " ");
+                }
             }
             System.out.println();
         }
     }
 
-    public void set(int i, int j, int element) {
-        matrix[i][j] = element;
+    public void set(int i, int j, double element) {
+        cells[i][j] = element;
     }
 
-    public int get(int i, int j) {
-        return matrix[i][j];
+    public double get(int i, int j) {
+        return cells[i][j];
     }
 
     public int getRowCount() {

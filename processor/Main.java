@@ -4,35 +4,100 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
+    private static int n;
+    private static int m;
 
     public static void main(String[] args) {
-        Matrix a = new Matrix();
-        //Matrix b = new Matrix();
-        //Matrix sum;
 
-        int n = scanner.nextInt();
-        int m = scanner.nextInt();
+        int userChoice;
+        do {
+            printMenu();
+            System.out.print("Your choice: ");
+            userChoice = scanner.nextInt();
 
-        a.initialize(n, m);
+            switch (userChoice) {
+                case 1:
+                    addMatrices();
+                    break;
+                case 2:
+                    multiplyByConstant();
+                    break;
+                case 3:
+                    multiplyMatrices();
+                    break;
+            }
+        } while (userChoice != 0);
+    }
+
+    private static void multiplyMatrices() {
+        System.out.print("Enter size of first matrix: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix a = Matrix.initialize(n, m);
+
+        System.out.println("Enter first matrix:");
         a.readMatrix();
 
-        int c = scanner.nextInt();
+        System.out.print("Enter size of second matrix: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix b = Matrix.initialize(n, m);
 
-        MatrixProcessor.multiplyByNumber(c, a).print();
+        System.out.println("Enter second matrix:");
+        b.readMatrix();
 
-        //n = scanner.nextInt();
-        //m = scanner.nextInt();
-
-        //b.initialize(n, m);
-        //b.readMatrix();
-
-        /*
         try {
-            sum = MatrixProcessor.add(a, b);
-        } catch (DifferentDimensionsException e) {
+            MatrixProcessor.multiply(a, b).print();
+        } catch (WrongDimensionsException e) {
             System.out.println("ERROR");
         }
+    }
 
-         */
+    private static void multiplyByConstant() {
+        System.out.print("Enter size of matrix: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix matrix = Matrix.initialize(n, m);
+
+        System.out.println("Enter matrix");
+        matrix.readMatrix();
+
+        System.out.print("Enter constant: ");
+        double c = scanner.nextDouble();
+
+        System.out.println("The result is:");
+        MatrixProcessor.multiplyByNumber(c, matrix).print();
+    }
+
+    private static void addMatrices() {
+        System.out.print("Enter size of first matrix: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix a = Matrix.initialize(n, m);
+
+        System.out.println("Enter first matrix:");
+        a.readMatrix();
+
+        System.out.print("Enter size of second matrix: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix b = Matrix.initialize(n, m);
+
+        System.out.println("Enter second matrix:");
+        b.readMatrix();
+
+        try {
+            MatrixProcessor.add(a, b).print();
+        } catch (WrongDimensionsException e) {
+            System.out.println("The operation cannot be performed.");
+        }
+    }
+
+    private static void printMenu() {
+        System.out.println();
+        System.out.println("1. Add matrices");
+        System.out.println("2. Multiply matrix by a constant");
+        System.out.println("3. Multiply matrices");
+        System.out.println("0. Exit");
     }
 }
