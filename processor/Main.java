@@ -11,7 +11,7 @@ public class Main {
 
         int userChoice;
         do {
-            printMenu();
+            printMainMenu();
             System.out.print("Your choice: ");
             userChoice = scanner.nextInt();
 
@@ -25,8 +25,28 @@ public class Main {
                 case 3:
                     multiplyMatrices();
                     break;
+                case 4:
+                    transposeMatrix();
             }
         } while (userChoice != 0);
+    }
+
+    private static void transposeMatrix() {
+        printTransposeMenu();
+
+        System.out.print("Your choice: ");
+        int userChoice = scanner.nextInt();
+
+        System.out.print("Enter matrix size: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix matrix = Matrix.initialize(n, m);
+
+        System.out.println("Enter matrix:");
+        matrix.readMatrix();
+
+        System.out.println("The result is:");
+        MatrixProcessor.transpose(matrix, userChoice).print();
     }
 
     private static void multiplyMatrices() {
@@ -93,11 +113,20 @@ public class Main {
         }
     }
 
-    private static void printMenu() {
+    private static void printMainMenu() {
         System.out.println();
         System.out.println("1. Add matrices");
         System.out.println("2. Multiply matrix by a constant");
         System.out.println("3. Multiply matrices");
+        System.out.println("4. Transpose matrix");
         System.out.println("0. Exit");
+    }
+
+    private static void printTransposeMenu() {
+        System.out.println();
+        System.out.println("1. Main diagonal");
+        System.out.println("2. Side diagonal");
+        System.out.println("3. Vertical line");
+        System.out.println("4. Horizontal line");
     }
 }
