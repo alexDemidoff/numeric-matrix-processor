@@ -27,8 +27,30 @@ public class Main {
                     break;
                 case 4:
                     transposeMatrix();
+                    break;
+                case 5:
+                    calculateDeterminant();
+                    break;
             }
         } while (userChoice != 0);
+    }
+
+    private static void calculateDeterminant() {
+        System.out.print("Enter matrix size: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix matrix = Matrix.initialize(n, m);
+
+        System.out.println("Enter matrix:");
+        matrix.readMatrix();
+
+        System.out.println("The result is: ");
+        double det = MatrixProcessor.calculateDeterminant(matrix);
+        if (det % 1 == 0) {
+            System.out.println((int) det);
+        } else {
+            System.out.println(det);
+        }
     }
 
     private static void transposeMatrix() {
@@ -119,6 +141,7 @@ public class Main {
         System.out.println("2. Multiply matrix by a constant");
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
+        System.out.println("5. Calculate a determinant");
         System.out.println("0. Exit");
     }
 

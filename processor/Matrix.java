@@ -55,4 +55,27 @@ public class Matrix {
     public int getColumnCount() {
         return m;
     }
+
+    public Matrix copyWithout(int row, int column) {
+        Matrix res = Matrix.initialize(this.getRowCount() - 1, this.getColumnCount() - 1);
+
+        int di = 0;
+        int dj;
+        for (int i = 0; i < this.getRowCount(); i++) {
+            dj = 0;
+            if (i == row) {
+                di = -1;
+            } else {
+                for (int j = 0; j < this.getColumnCount(); j++) {
+                    if (j == column) {
+                        dj = -1;
+                    } else {
+                        res.set(i + di, j + dj, this.get(i , j));
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
 }
