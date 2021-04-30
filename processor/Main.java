@@ -31,8 +31,23 @@ public class Main {
                 case 5:
                     calculateDeterminant();
                     break;
+                case 6:
+                    inverseMatrix();
+                    break;
             }
         } while (userChoice != 0);
+    }
+
+    private static void inverseMatrix() {
+        System.out.print("Enter matrix size: ");
+        n = scanner.nextInt();
+        m = scanner.nextInt();
+        Matrix matrix = Matrix.initialize(n, m);
+
+        System.out.println("Enter matrix:");
+        matrix.read();
+
+        MatrixProcessor.inverseMatrix(matrix);
     }
 
     private static void calculateDeterminant() {
@@ -42,7 +57,7 @@ public class Main {
         Matrix matrix = Matrix.initialize(n, m);
 
         System.out.println("Enter matrix:");
-        matrix.readMatrix();
+        matrix.read();
 
         System.out.println("The result is: ");
         double det = MatrixProcessor.calculateDeterminant(matrix);
@@ -65,7 +80,7 @@ public class Main {
         Matrix matrix = Matrix.initialize(n, m);
 
         System.out.println("Enter matrix:");
-        matrix.readMatrix();
+        matrix.read();
 
         System.out.println("The result is:");
         MatrixProcessor.transpose(matrix, userChoice).print();
@@ -78,7 +93,7 @@ public class Main {
         Matrix a = Matrix.initialize(n, m);
 
         System.out.println("Enter first matrix:");
-        a.readMatrix();
+        a.read();
 
         System.out.print("Enter size of second matrix: ");
         n = scanner.nextInt();
@@ -86,7 +101,7 @@ public class Main {
         Matrix b = Matrix.initialize(n, m);
 
         System.out.println("Enter second matrix:");
-        b.readMatrix();
+        b.read();
 
         try {
             MatrixProcessor.multiply(a, b).print();
@@ -102,7 +117,7 @@ public class Main {
         Matrix matrix = Matrix.initialize(n, m);
 
         System.out.println("Enter matrix");
-        matrix.readMatrix();
+        matrix.read();
 
         System.out.print("Enter constant: ");
         double c = scanner.nextDouble();
@@ -118,7 +133,7 @@ public class Main {
         Matrix a = Matrix.initialize(n, m);
 
         System.out.println("Enter first matrix:");
-        a.readMatrix();
+        a.read();
 
         System.out.print("Enter size of second matrix: ");
         n = scanner.nextInt();
@@ -126,7 +141,7 @@ public class Main {
         Matrix b = Matrix.initialize(n, m);
 
         System.out.println("Enter second matrix:");
-        b.readMatrix();
+        b.read();
 
         try {
             MatrixProcessor.add(a, b).print();
@@ -142,6 +157,7 @@ public class Main {
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
         System.out.println("5. Calculate a determinant");
+        System.out.println("6. Inverse matrix");
         System.out.println("0. Exit");
     }
 

@@ -58,21 +58,20 @@ public class MatrixProcessor {
     }
 
     public static double calculateDeterminant(Matrix m) {
-        if (m.getRowCount() == 2) {
-            return m.get(0, 0) * m.get(1, 1) - m.get(0, 1) * m.get(1, 0);
-        } else {
-            double det = 0;
-            int i = 0; // first-row expansion
-            for (int j = 0; j < m.getColumnCount(); j++) {
-                if (i + j % 2 == 0) {
-                    det += m.get(i, j) * calculateDeterminant(m.copyWithout(i, j));
-                } else {
-                    det -= m.get(i, j) * calculateDeterminant(m.copyWithout(i, j));
-                }
-            }
+        double det = 0;
 
-            return det;
+        if (m.getRowCount() == 1) {
+            return m.get(0, 0);
         }
+
+        int sign = 1;
+        int i = 0; // first-row expansion
+        for (int j = 0; j < m.getColumnCount(); j++) {
+            det += sign * m.get(i, j) * calculateDeterminant(m.getCofactor(i, j));
+            sign = -sign;
+        }
+
+        return det;
     }
 
     public static Matrix transpose(Matrix matrix, int mode) {

@@ -19,7 +19,7 @@ public class Matrix {
         return new Matrix(n, m);
     }
 
-    public void readMatrix() {
+    public void read() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 cells[i][j] = scanner.nextDouble();
@@ -56,21 +56,19 @@ public class Matrix {
         return m;
     }
 
-    public Matrix copyWithout(int row, int column) {
+    public Matrix getCofactor(int row, int column) {
         Matrix res = Matrix.initialize(this.getRowCount() - 1, this.getColumnCount() - 1);
 
-        int di = 0;
-        int dj;
+        int r = 0;
+        int c = 0;
         for (int i = 0; i < this.getRowCount(); i++) {
-            dj = 0;
-            if (i == row) {
-                di = -1;
-            } else {
-                for (int j = 0; j < this.getColumnCount(); j++) {
-                    if (j == column) {
-                        dj = -1;
-                    } else {
-                        res.set(i + di, j + dj, this.get(i , j));
+            for (int j = 0; j < this.getColumnCount(); j++) {
+                if (i != row && j != column) {
+                    res.set(r, c++, this.get(i, j));
+
+                    if (c == res.getColumnCount() - 1) {
+                        c = 0;
+                        r++;
                     }
                 }
             }
