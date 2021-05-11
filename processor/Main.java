@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
+    private static Matrix matrix1;
+    private static Matrix matrix2;
     private static int n;
     private static int m;
 
@@ -47,7 +49,12 @@ public class Main {
         System.out.println("Enter matrix:");
         matrix.read();
 
-        MatrixProcessor.inverseMatrix(matrix);
+        if (matrix.inverse() == null) {
+            System.out.println("This matrix doesn't have an inverse.");
+        } else {
+            System.out.println("The result is:");
+            matrix.inverse().print();
+        }
     }
 
     private static void calculateDeterminant() {
@@ -59,8 +66,9 @@ public class Main {
         System.out.println("Enter matrix:");
         matrix.read();
 
+        double det = matrix.calculateDeterminant();
+
         System.out.println("The result is: ");
-        double det = MatrixProcessor.calculateDeterminant(matrix);
         if (det % 1 == 0) {
             System.out.println((int) det);
         } else {
@@ -83,7 +91,7 @@ public class Main {
         matrix.read();
 
         System.out.println("The result is:");
-        MatrixProcessor.transpose(matrix, userChoice).print();
+        matrix.transpose(userChoice).print();
     }
 
     private static void multiplyMatrices() {
@@ -104,7 +112,7 @@ public class Main {
         b.read();
 
         try {
-            MatrixProcessor.multiply(a, b).print();
+            a.multiplyBy(b).print();
         } catch (WrongDimensionsException e) {
             System.out.println("ERROR");
         }
@@ -123,7 +131,7 @@ public class Main {
         double c = scanner.nextDouble();
 
         System.out.println("The result is:");
-        MatrixProcessor.multiplyByNumber(c, matrix).print();
+        matrix.multiplyBy(c).print();
     }
 
     private static void addMatrices() {
@@ -144,7 +152,7 @@ public class Main {
         b.read();
 
         try {
-            MatrixProcessor.add(a, b).print();
+            a.add(b).print();
         } catch (WrongDimensionsException e) {
             System.out.println("The operation cannot be performed.");
         }
