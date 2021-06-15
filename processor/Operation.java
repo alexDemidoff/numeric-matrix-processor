@@ -1,0 +1,11 @@
+package processor;
+
+public enum Operation {
+    MATRIX_ADDITION,
+    MULTIPLYING_BY_CONSTANT,
+    MATRIX_MULTIPLICATION,
+    TRANSPOSING,
+    CALCULATING_DETERMINANT,
+    INVERTING,
+    EXIT
+}

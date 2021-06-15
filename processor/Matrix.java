@@ -1,10 +1,7 @@
 package processor;
 
-import java.util.Scanner;
+public class Matrix implements MatrixOperations {
 
-public class Matrix implements EnterMatrix {
-
-    private static final Scanner scanner = new Scanner(System.in);
     private final double[][] cells;
     private final int n;
     private final int m;
@@ -17,14 +14,6 @@ public class Matrix implements EnterMatrix {
 
     public static Matrix initialize(int n, int m) {
         return new Matrix(n, m);
-    }
-
-    public void read() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                cells[i][j] = scanner.nextDouble();
-            }
-        }
     }
 
     public void print() {
@@ -78,24 +67,29 @@ public class Matrix implements EnterMatrix {
     }
 
     @Override
-    public Matrix add(Matrix m) {
-        Matrix res = Matrix.initialize(this.getRowCount(), m.getColumnCount());
+    public Matrix add(Matrix m, Status status) {
+        Matrix res = null;
 
         if (this.getRowCount() == m.getRowCount() && this.getColumnCount() == m.getColumnCount()) {
+            res = Matrix.initialize(this.getRowCount(), m.getColumnCount());
+
             for (int i = 0; i < res.getRowCount(); i++) {
                 for (int j = 0; j < res.getColumnCount(); j++) {
                     res.set(i, j, this.get(i, j) + m.get(i, j));
                 }
             }
+
+            status.isSuccess(true);
         } else {
-            return null;
+            status.isSuccess(false);
+            status.setMessage("Matrices should have the same dimensions.");
         }
 
         return res;
     }
 
     @Override
-    public Matrix multiplyBy(double c) {
+    public Matrix multiplyBy(double c, Status status) {
         Matrix res = Matrix.initialize(this.getRowCount(), this.getColumnCount());
 
         for (int i = 0; i < this.getRowCount(); i++) {
@@ -104,14 +98,16 @@ public class Matrix implements EnterMatrix {
             }
         }
 
+        status.isSuccess(true);
         return res;
     }
 
     @Override
-    public Matrix multiplyBy(Matrix m) {
-        Matrix res = Matrix.initialize(this.getRowCount(), m.getColumnCount());
+    public Matrix multiplyBy(Matrix m, Status status) {
+        Matrix res = null;
 
         if (this.getColumnCount() == m.getRowCount()) {
+            res = Matrix.initialize(this.getRowCount(), m.getColumnCount());
 
             for (int k = 0; k < m.getColumnCount(); k++) {
                 for (int i = 0; i < this.getRowCount(); i++) {
@@ -122,15 +118,20 @@ public class Matrix implements EnterMatrix {
                     res.set(i, k, sum);
                 }
             }
+
+            status.isSuccess(true);
         } else {
-            return null;
+            status.isSuccess(false);
+            status.setMessage("Columns of first matrix should be equal to rows of second matrix.");
         }
 
         return res;
     }
 
     @Override
-    public Matrix transpose(int mode) {
+    public Matrix transpose(int mode, Status status) {
+        status.isSuccess(true);
+
         switch (mode) {
             case MAIN_DIAGONAL:
                 return transposeAlongMainDiagonal();
@@ -145,7 +146,7 @@ public class Matrix implements EnterMatrix {
         }
     }
 
-    public Matrix getMinor(int skipRow, int skipColumn) {
+    private Matrix getMinor(int skipRow, int skipColumn) {
         Matrix res = Matrix.initialize(this.getRowCount() - 1, this.getColumnCount() - 1);
 
         int r = 0;
@@ -190,24 +191,30 @@ public class Matrix implements EnterMatrix {
     }
 
     @Override
-    public Matrix inverse() {
-        Matrix cofactorMatrix = Matrix.initialize(this.getRowCount(), this.getColumnCount());
+    public Matrix inverse(Status status) {
+        Matrix cofactorMatrix;
+        Matrix res = null;
 
-        double det = calculateDeterminant(this);
+        double det = calculateDeterminant();
 
         if (det == 0) {
-            return null;
+            status.isSuccess(false);
+            status.setMessage("This matrix doesn't have an inverse.");
         } else {
-            int sign = 1;
+            cofactorMatrix = Matrix.initialize(this.getRowCount(), this.getColumnCount());
+            int sign;
             for (int i = 0; i < this.getRowCount(); i++) {
                 for (int j = 0; j < this.getColumnCount(); j++) {
+                    sign = (i + j) % 2 == 0 ? 1 : -1;
                     cofactorMatrix.set(i, j, sign * calculateDeterminant(getMinor(i, j)));
-                    sign = -sign;
                 }
             }
+
+            res = cofactorMatrix.transpose(MAIN_DIAGONAL, status).multiplyBy(1 / det, status);
+            status.isSuccess(true);
         }
 
-        return cofactorMatrix.transpose(MAIN_DIAGONAL).multiplyBy(1 / det);
+        return res;
     }
 
     private Matrix transposeAlongHorizontalLine() {
@@ -248,5 +255,11 @@ public class Matrix implements EnterMatrix {
         }
 
         return res;
+    }
+
+    public void setRow(int rowIndex, String[] row) {
+        for (int j = 0; j < getColumnCount(); j++) {
+            set(rowIndex, j, Double.parseDouble(row[j]));
+        }
     }
 }
